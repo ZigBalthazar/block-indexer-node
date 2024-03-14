@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@ethereumjs/block": "^5.1.1",
+    "@ethereumjs/util": "^9.0.2"
+  },
+  "dependencies": {
+    "@ethereumjs/devp2p": "^6.1.1",
+    "chalk": "^4.1.2"
+  }
+}
