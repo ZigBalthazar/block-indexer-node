@@ -18,7 +18,7 @@ export class Network {
     this.rlpx = new RLPx(config.privateKey, {
       dpt: this.dpt,
       maxPeers: 25,
-      capabilities: [ETH.eth66, ETH.eth68],
+      capabilities: [ETH.eth66, ETH.eth65,ETH.eth68],
       common: config.common,
       remoteClientIdFilter: config.REMOTE_CLIENT_ID_FILTER,
     });
@@ -39,12 +39,12 @@ export class Network {
     this.rlpxPeerAddedEvent();
     this.rlpxPeerRemovedEvent();
     this.rlpxPeerErrorEvent();
-    this.ethMessageEvent();
   }
 
-  private ethMessageEvent() {}
   private rlpxPeerAddedEvent() {
-    this.ethMessageEvent();
+    this.rlpx.events.on("peer:added", (peer) => {
+      this.handler.rlpxPeerAddedEvent(this.rlpx, peer);
+    });
   }
 
   private dptErrorEvent() {
@@ -69,10 +69,10 @@ export class Network {
       const openSlots = this.rlpx._getOpenSlots();
 
       // @ts-ignore
-      const queueLength = rlpx._peersQueue.length;
+      const queueLength = this.rlpx._peersQueue.length;
 
       // @ts-ignore
-      const queueLength2 = rlpx._peersQueue.filter((o) => o.ts <= Date.now()).length;
+      const queueLength2 = this.rlpx._peersQueue.filter((o) => o.ts <= Date.now()).length;
 
       console.log(`Total nodes in DPT: ${peersCount}, open slots: ${openSlots}, queue: ${queueLength} / ${queueLength2}`);
     }, 30000);
